@@ -1,0 +1,11 @@
+---
+# defaults file for docker-compose
+
+# `uname -s`
+kernel_name: 'Linux'
+
+# `uname -m`
+machine: 'x86_64'
+
+# Docker-compose version to install
+version: '1.24.1'

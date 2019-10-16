@@ -1,0 +1,28 @@
+- hosts: 'nginx'
+  remote_user: 'ubuntu'
+  become: true
+  gather_facts: false
+  roles:
+    - 'bootstrap'
+
+
+- hosts: 'nginx'
+  remote_user: 'ubuntu'
+  become: true
+  gather_facts: true
+  roles:
+    - 'docker-ce'
+    - 'docker-compose'
+    - 'ecr-docker-compose-nginx'
+
+- name: Get URL content from ALB's domain name
+  hosts: 'nginx'
+  remote_user: 'ubuntu'
+  become: true
+  gather_facts: false
+  tasks:
+  - include: subtasks.yml file='{{ item }}'
+    with_items:
+    - '1'
+    - '2'
+    - '3'

@@ -1,0 +1,27 @@
+---
+# tasks file for docker-compose
+
+# For alpine, the following dependency packages are needed: py-pip,  
+
+# Install docker-compose dependencies
+- name: 'install docker-compose dependencies'
+  apt:
+    name: ['python-dev', 'libssl-dev', 'libffi-dev', 'gcc', 'libc-dev', 'make']    
+    state: 'present'
+    update_cache: 'yes'
+
+# Download docker-compose binary
+- name: 'download docker-compose binary'
+  get_url:
+    url: 'https://github.com/docker/compose/releases/download/{{ version }}/docker-compose-{{ kernel_name }}-{{ machine }}'
+    dest: '/usr/local/bin/docker-compose'
+    mode: '0755'
+
+# Create a symbolic link to /usr/bin or any other directory in your path
+- name: 'create a symlink to /usr/bin'
+  file:
+    src: '/usr/local/bin/docker-compose'
+    dest: '/usr/bin/docker-compose'
+    owner: 'root'
+    group: 'root'
+    state: 'link'

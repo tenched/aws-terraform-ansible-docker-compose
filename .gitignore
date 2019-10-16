@@ -1,0 +1,15 @@
+#  Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# .tfvars files
+*.tfvars
+
+# self-signed key and certificate pair
+terraform/files/*
+
+# Ansible inventory file
+ansible/hosts

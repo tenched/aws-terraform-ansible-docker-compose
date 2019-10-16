@@ -1,0 +1,77 @@
+---
+# Install dependencies
+- name: 'install AWS cli, python-setuptools, python-pip'
+  apt:
+    name: ['awscli', 'python-setuptools', 'python-pip']
+    state: 'present'
+    update_cache: 'yes'
+
+# Install docker SDK for Python
+- name: 'install docker SDK for Python'
+  pip:
+    name:
+      - 'docker'
+      - 'docker-compose'
+
+# Make directory for AWS config and cred files
+- name: 'make directory for AWS config and cred files'
+  file:
+    dest: '~/.aws'
+    state: 'directory'
+    mode: 'u=rwx,g=,o='
+
+# Copy AWS config file
+- name: 'copy AWS config file'
+  template:
+    src: '~/.aws/config'
+    dest: '~/.aws/config'
+    mode: 'u=rw,g=,o='
+
+# Copy AWS credentials file
+- name: 'copy AWS credentials file'
+  template:
+    src: '~/.aws/credentials'
+    dest: '~/.aws/credentials'
+    mode: 'u=rw,g=,o='
+
+# Login to AWS ECR
+- name: 'docker login (must `--no-include-email`)'
+  shell: '$(aws ecr get-login --region {{ region }} --no-include-email)'
+  args:
+    executable: '/bin/bash'
+
+# Tag image
+- name: 'add tag'
+  docker_image:
+    name: '{{ image_name }}:{{ image_version }}'
+    repository: '{{ repository_uri }}'
+    tag: '{{ image_version }}'
+    source: 'pull'
+  when: inventory_hostname == 'instance01'
+
+# Push image to AWS ECR
+- name: 'push image to AWS ECR'
+  docker_image:
+    name: '{{ repository_uri }}:{{ image_version }}'
+    push: 'yes'
+    source: 'pull'
+  when: inventory_hostname == 'instance01'
+
+- name: 'copy docker-compose.yml to remote server'
+  template:
+    src: 'docker-compose.yml'
+    dest: '/tmp/docker-compose/'
+
+- name: 'create folder for html content'
+  file:
+    path: '/tmp/html'
+    state: 'directory'
+    mode: '0755'
+
+- name: 'get AWS EC2 instance ID'
+  shell: 'echo -n "Hello, i am Nginx on instance: " > /tmp/html/index.html && ec2metadata --instance-id >> /tmp/html/index.html'
+
+- name: 'run docker-compose'
+  docker_compose:
+    project_src: '/tmp/docker-compose/'
+    build: 'yes'

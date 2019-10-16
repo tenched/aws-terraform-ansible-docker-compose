@@ -1,0 +1,15 @@
+- name: 'Get URL'
+  uri:
+    url: '{{ url }}'
+    validate_certs: no
+    return_content: yes
+    force: yes
+    dest: '/tmp/response{{ file }}.txt'
+
+- name: 'Register URL content'
+  shell: 'cat /tmp/response{{ file }}.txt'
+  register: 'data'
+
+- name: 'Display content from {{ url }}'
+  debug:
+    var: 'data.stdout'

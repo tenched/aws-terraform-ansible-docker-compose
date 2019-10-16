@@ -1,0 +1,9 @@
+version: '2'
+
+services:
+  nginx:
+    image: {{ repository_uri }}:{{ image_version }}
+    ports:
+      - 80:80
+    volumes:
+      - /tmp/html:/usr/share/nginx/html

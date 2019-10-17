@@ -60,6 +60,7 @@ How to use
 - Destroy resources
     - 'cd ../terraform'
     - 'terraform destroy'
+    - Delete S3 bucket manually from AWS console
 
 Compatibility
 

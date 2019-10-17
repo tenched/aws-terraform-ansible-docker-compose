@@ -5,7 +5,7 @@ terraform {
   # backend "s3" {
   #   encrypt = true
   #   # get bucket name from Terraform output
-  #   bucket = "terraform-remote-state-storage20191017163916745500000001"
+  #   bucket = ""
   #   dynamodb_table = "terraform-state-lock-dynamodb"
   #   region = "eu-central-1"
   #   key = "test/terraform.tfstate"

@@ -59,8 +59,9 @@ How to use
 
 - Destroy resources
     - 'cd ../terraform'
+    - Get back to using local Terraform state. Comment out backend block inside provider block, run 'terraform init'
+    - Change "prevent_destroy" to false in s3 bucket's lifecycle policy block
     - 'terraform destroy'
-    - Delete S3 bucket manually from AWS console
 
 Compatibility
 

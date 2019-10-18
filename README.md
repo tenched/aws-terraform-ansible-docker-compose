@@ -48,7 +48,7 @@ How to use
     - 'terraform init'
     - 'terraform plan'
     - 'terraform apply'
-    - (Optional). To use remote Terraform state (with locking) uncomment backend section inside terraform section in main.tf, change "bucket" value and run 'terraform init' again
+    - (Optional). To use remote Terraform state (with locking) uncomment backend section inside terraform section in main.tf, change "bucket" and "region" values and run 'terraform init' again
 
 - Generate Ansible inventory file
     - 'cd ../ansible'

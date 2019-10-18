@@ -24,6 +24,7 @@ resource "aws_s3_bucket" "terraform-state-storage-s3" {
     # has to be unique globally
     bucket_prefix = "terraform-remote-state-storage"
     acl = "private"
+    force_destroy = true
  
      versioning {
       enabled = true

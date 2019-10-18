@@ -3,11 +3,12 @@ terraform {
   required_version = ">= 0.12.9"
 
   # backend "s3" {
-  #   encrypt = true
+  #   # bucket region
+  #   region = "eu-central-1"
   #   # get bucket name from Terraform output
   #   bucket = ""
+  #   encrypt = true
   #   dynamodb_table = "terraform-state-lock-dynamodb"
-  #   region = "eu-central-1"
   #   key = "test/terraform.tfstate"
   # }
 }

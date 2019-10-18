@@ -16,3 +16,7 @@ output "image_name" {
 output "image_version" {
   value = "${var.docker_image_version}"
 }
+
+output "aws_s3_bucket" {
+  value = "${aws_s3_bucket.terraform-state-storage-s3.id}"
+}

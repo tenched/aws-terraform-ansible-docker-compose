@@ -1,12 +1,58 @@
-# Required Terrafrom version
+# Required Terraform version
 terraform {
   required_version = ">= 0.12.9"
+
+  # backend "s3" {
+  #   # bucket region
+  #   region = "eu-central-1"
+  #   # get bucket name from Terraform output
+  #   bucket = ""
+  #   encrypt = true
+  #   dynamodb_table = "terraform-state-lock-dynamodb"
+  #   key = "test/terraform.tfstate"
+  # }
 }
 
 # Configure AWS Provider
 provider "aws" {
-    version = "~> 2.31"
+    version = "~> 2.33"
     region = "${var.aws_region}"
+}
+
+# Create an S3 bucket to store the state file in
+resource "aws_s3_bucket" "terraform-state-storage-s3" {
+    # has to be unique globally
+    bucket_prefix = "terraform-remote-state-storage"
+    acl = "private"
+ 
+     versioning {
+      enabled = true
+    }
+ 
+    lifecycle {
+      prevent_destroy = true
+    }
+ 
+    tags = {
+      Name = "test S3 Remote Terraform State Storage"
+    }
+}
+
+# Create a dynamodb table for locking the state file
+resource "aws_dynamodb_table" "dynamodb-terraform-state-lock" {
+  name = "terraform-state-lock-dynamodb"
+  hash_key = "LockID"
+  read_capacity = 1
+  write_capacity = 1
+ 
+  attribute {
+    name = "LockID"
+    type = "S"
+  }
+ 
+  tags = {
+    Name = "test DynamoDB Terraform State Lock Table"
+  }
 }
 
 # Create VPC
